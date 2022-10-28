@@ -1,0 +1,10 @@
+#%RAML 1.0 Library
+types:
+  empTypes: !include exchange_modules/ea950956-34aa-466f-9fb6-c2352499a2ac/employeedatatype/1.0.0/employeedatatype.raml
+
+traits:
+  common: !include traits/commonResonses.raml
+  client-id-required: !include traits/client-id-enforcement.raml
+
+securitySchemes:
+  basicAuth: !include /exchange_modules/org.mule.examples/basic-auth-securityscheme/1.0.0/basic-auth-securityscheme.raml

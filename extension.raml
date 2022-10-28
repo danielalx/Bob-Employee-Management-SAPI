@@ -1,0 +1,18 @@
+#%RAML 1.0 Extension
+extends: bob-employee-mgt-system-api.raml
+
+description: This fragment defines addtional preivilage for admin personnel
+
+/employees/{id}:
+  delete:
+    securedBy: [lib.basicAuth]
+    description: Used to remove employee record by id
+    displayName: Delete a record
+    responses:
+      200:
+        body:
+          application/json:
+            example:
+              {"message": "Employee record is deleted (but not really)"}
+    is:
+      - lib.common
