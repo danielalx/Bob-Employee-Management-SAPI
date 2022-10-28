@@ -1,0 +1,100 @@
+#%RAML 1.0
+title: bob-employee-mgt-system-api
+description: This Employee Management System API used supposrts d/t operation on HR schema and employees table in BOB Inc. Developed by ...
+
+uses:
+  lib : library.raml
+
+/employees:
+  is: [lib.client-id-required]
+  get:
+    displayName: Get Employees
+    description: This method will all fetch employees record or portion of it based on department as query paramater
+    queryParameters:
+      department:
+        type: string
+        required: false
+        enum:
+          - IT
+          - HRM
+          - FINANACE
+          - MARKETING
+    responses:
+      200:
+        description: Reason Phrase OK
+        body:
+          application/json:
+            type: lib.empTypes []
+            examples:
+              output: !include /exchange_modules/ea950956-34aa-466f-9fb6-c2352499a2ac/allemployeesexample/1.0.0/allemployeesexample.raml
+    is:
+      - lib.common
+  
+  post:
+    description: Creates or add new object record to the hr database
+    displayName: Create a New Record
+    body:
+      application/json:
+        type: lib.empTypes
+        examples:
+          input: !include examples/postEmployeeNoEMP_ID.raml
+    responses:
+      201:
+        description: Created
+        body:
+          application/json:
+            example:
+              {
+                "message": "New Employee Record is added (but not really)"
+              }
+    is:
+      - lib.common
+
+  /{id}:
+    is: [lib.client-id-required]
+    get:
+      description: Retreive a single record using employee id as URI Param
+      displayName: Get Employee Record
+      responses:
+        200:
+          body:
+            application/json:
+              type: lib.empTypes
+              examples:
+                output: !include examples/employeeByID.raml
+      is: 
+        - lib.common
+
+    put:
+      description: Modify a single record using employee id as URI Param
+      displayName: Update Employee Record
+      body:
+        application/json:
+          type: lib.empTypes
+          examples:
+            input: !include examples/postEmployeeNoEMP_ID.raml
+      responses:
+        200:
+          body:
+            application/json:
+              example:
+                {
+                  "message": "Employee Record is modified (but not really)"
+                }
+      is:
+        - lib.common
+
+    delete:
+      securedBy: [lib.basicAuth]
+      description: Used to remove employee record by id
+      displayName: Delete a record
+      responses:
+        200:
+          body:
+            application/json:
+              example:
+                {"message": "Employee record is deleted (but not really)"}
+      is:
+        - lib.common
+    
+
